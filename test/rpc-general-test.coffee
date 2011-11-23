@@ -11,7 +11,7 @@ describe "RpcGeneral", ->
       theError = err
       theResult = result
 
-    rpc.makeRequest "someCoolMethod", ["arg1", "arg2"], myCallback
+    rpc.send "someCoolMethod", ["arg1", "arg2"], myCallback
     expect(rpc.lastId).toBeTruthy()
     id = rpc.lastId
     expect(rpc.callbacks[id]).toBe(myCallback)
@@ -22,7 +22,7 @@ describe "RpcGeneral", ->
 
     expect(theResult).toBe(null)
 
-    rpc.receiveResponse
+    rpc.receive
       result: [1, "two"]
       error: null
       id: id 
@@ -40,9 +40,9 @@ describe "RpcGeneral", ->
       theError = err
       theResult = result
 
-    rpc.makeRequest "someCoolMethod", ["arg1", "arg2"], myCallback
+    rpc.send "someCoolMethod", ["arg1", "arg2"], myCallback
     id = rpc.lastId
-    rpc.receiveResponse
+    rpc.receive
       result: null
       error: "an error"
       id: id 
@@ -50,5 +50,54 @@ describe "RpcGeneral", ->
     expect(theResult).toEqual(null)
     expect(theError).toBe("an error")
 
+
+  it "should recieve a request and send a response", ->
+    methods = sayHi: (name, cb) ->
+        cb null, "hi #{name}"
+    rpc.setMethods methods
+    expect(rpc.methods).toBe methods
+
+    spyOn rpc.methods, "sayHi" 
+
+    cb = rpc.receive    
+      method: "sayHi"
+      params: "drew" 
+      id: "123"
+
+    expect(rpc.methods.sayHi).toHaveBeenCalledWith("drew", cb)
+
+    spyOn rpc, "send"
+    cb(null, "Hi drew")
+
+    expect(rpc.send).toHaveBeenCalledWith
+      error: null
+      result: "Hi drew"
+      id: "123"
+
+  
+  it "should recieve a request and send a response with an error", ->
+    methods = sayHi: (name, cb) ->
+        cb null, "hi #{name}"
+    rpc.setMethods methods
+    expect(rpc.methods).toBe methods
+
+    spyOn rpc.methods, "sayHi" 
+
+    cb = rpc.receive    
+      method: "sayHi"
+      params: "drew" 
+      id: "123"
+
+    expect(rpc.methods.sayHi).toHaveBeenCalledWith("drew", cb)
+
+    spyOn rpc, "send"
+    cb("another error", null)
+
+    expect(rpc.send).toHaveBeenCalledWith
+      error: "another error"
+      result: null
+      id: "123"
+
+  
 
 

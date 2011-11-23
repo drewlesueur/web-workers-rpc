@@ -2,6 +2,7 @@ dModule.define "rpc-general", ->
   class RpcGeneral
     constructor: ->
       @callbacks = {}
+      @methods = {}
 
     uuid: =>
       #http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
@@ -9,13 +10,27 @@ dModule.define "rpc-general", ->
             
     setCallingMethod: (method) => 
       @callingMethod = method
-    
-    receiveResponse: (obj) =>
-      {result, error, id} = obj 
-      @callbacks[id]?(error, result)
-      delete @callbacks[id]
 
-    makeRequest: (method, args, callback) =>
+    setMethods: (methods) =>
+      @methods = methods
+    
+    receive: (obj) =>
+      if obj.result or obj.error
+        {result, error, id} = obj 
+        @callbacks[id]?(error, result)
+        delete @callbacks[id]
+      else if obj.method
+        {method, params, id} = obj 
+        cb = (err, result) =>
+          @send
+            result: result
+            error: err
+            id: id
+
+        @methods[method]? params, cb
+        return cb
+
+    send: (method, args, callback) =>
       @lastId = @uuid()
       @callbacks[@lastId] = callback
 

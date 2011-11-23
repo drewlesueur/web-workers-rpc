@@ -13,7 +13,7 @@
         theError = err;
         return theResult = result;
       };
-      rpc.makeRequest("someCoolMethod", ["arg1", "arg2"], myCallback);
+      rpc.send("someCoolMethod", ["arg1", "arg2"], myCallback);
       expect(rpc.lastId).toBeTruthy();
       id = rpc.lastId;
       expect(rpc.callbacks[id]).toBe(myCallback);
@@ -23,7 +23,7 @@
         id: id
       });
       expect(theResult).toBe(null);
-      rpc.receiveResponse({
+      rpc.receive({
         result: [1, "two"],
         error: null,
         id: id
@@ -32,7 +32,7 @@
       expect(theError).toBe(null);
       return expect(rpc.callbacks[id]).not.toBeTruthy();
     });
-    return it("should do an rpc request and receive response with an error", function() {
+    it("should do an rpc request and receive response with an error", function() {
       var id, myCallback, theError, theResult;
       rpc.setCallingMethod(function() {});
       spyOn(rpc, "callingMethod");
@@ -42,15 +42,63 @@
         theError = err;
         return theResult = result;
       };
-      rpc.makeRequest("someCoolMethod", ["arg1", "arg2"], myCallback);
+      rpc.send("someCoolMethod", ["arg1", "arg2"], myCallback);
       id = rpc.lastId;
-      rpc.receiveResponse({
+      rpc.receive({
         result: null,
         error: "an error",
         id: id
       });
       expect(theResult).toEqual(null);
       return expect(theError).toBe("an error");
+    });
+    it("should recieve a request and send a response", function() {
+      var cb, methods;
+      methods = {
+        sayHi: function(name, cb) {
+          return cb(null, "hi " + name);
+        }
+      };
+      rpc.setMethods(methods);
+      expect(rpc.methods).toBe(methods);
+      spyOn(rpc.methods, "sayHi");
+      cb = rpc.receive({
+        method: "sayHi",
+        params: "drew",
+        id: "123"
+      });
+      expect(rpc.methods.sayHi).toHaveBeenCalledWith("drew", cb);
+      spyOn(rpc, "send");
+      cb(null, "Hi drew");
+      return expect(rpc.send).toHaveBeenCalledWith({
+        error: null,
+        result: "Hi drew",
+        id: "123"
+      });
+    });
+    return it("should recieve a request and send a response with an error", function() {
+      var cb, methods;
+      methods = {
+        sayHi: function(name, cb) {
+          return cb(null, "hi " + name);
+        }
+      };
+      rpc.setMethods(methods);
+      expect(rpc.methods).toBe(methods);
+      spyOn(rpc.methods, "sayHi");
+      cb = rpc.receive({
+        method: "sayHi",
+        params: "drew",
+        id: "123"
+      });
+      expect(rpc.methods.sayHi).toHaveBeenCalledWith("drew", cb);
+      spyOn(rpc, "send");
+      cb("another error", null);
+      return expect(rpc.send).toHaveBeenCalledWith({
+        error: "another error",
+        result: null,
+        id: "123"
+      });
     });
   });
 }).call(this);
