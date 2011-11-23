@@ -1,9 +1,10 @@
-
+(function() {
+  var Boss, Hire, WebWorkersRpc;
+  WebWorkersRpc = dModule.require("web-workers-rpc");
+  Boss = WebWorkersRpc.Boss;
+  Hire = WebWorkersRpc.Hire;
   describe("Boss", function() {
-    var Boss, Hire, WebWorkersRpc, boss;
-    WebWorkersRpc = dModule.require("web-workers-rpc");
-    Boss = WebWorkersRpc.Boss;
-    Hire = WebWorkersRpc.Hire;
+    var boss;
     boss = null;
     beforeEach(function() {});
     it("shou have an instance of a real web worker", function() {
@@ -18,9 +19,7 @@
     });
     return it("shou");
   });
-
   describe("Hire", function() {
-    var Boss, Hire, WebWorkersRpc;
     WebWorkersRpc = dModule.require("web-workers-rpc");
     Boss = WebWorkersRpc.Boss;
     Hire = WebWorkersRpc.Hire;
@@ -34,3 +33,4 @@
       });
     });
   });
+}).call(this);

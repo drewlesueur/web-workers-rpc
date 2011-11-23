@@ -1,7 +1,9 @@
+WebWorkersRpc = dModule.require("web-workers-rpc") 
+Boss = WebWorkersRpc.Boss 
+Hire = WebWorkersRpc.Hire
+
+
 describe "Boss", ->
-  WebWorkersRpc = dModule.require("web-workers-rpc") 
-  Boss = WebWorkersRpc.Boss 
-  Hire = WebWorkersRpc.Hire
   boss = null
   beforeEach ->
   
