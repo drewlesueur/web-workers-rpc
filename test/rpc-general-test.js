@@ -68,9 +68,9 @@
         id: "123"
       });
       expect(rpc.methods.sayHi).toHaveBeenCalledWith("drew", cb);
-      spyOn(rpc, "send");
+      spyOn(rpc, "sendMethod");
       cb(null, "Hi drew");
-      return expect(rpc.send).toHaveBeenCalledWith({
+      return expect(rpc.sendMethod).toHaveBeenCalledWith({
         error: null,
         result: "Hi drew",
         id: "123"
@@ -92,9 +92,9 @@
         id: "123"
       });
       expect(rpc.methods.sayHi).toHaveBeenCalledWith("drew", cb);
-      spyOn(rpc, "send");
+      spyOn(rpc, "sendMethod");
       cb("another error", null);
-      return expect(rpc.send).toHaveBeenCalledWith({
+      return expect(rpc.sendMethod).toHaveBeenCalledWith({
         error: "another error",
         result: null,
         id: "123"

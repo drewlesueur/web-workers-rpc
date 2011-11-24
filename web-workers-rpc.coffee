@@ -8,14 +8,13 @@ dModule.define "web-workers-rpc", ->
       @worker.onmessage = @receiveMethod
 
     receiveMethod: (event) =>
+      console.log "received"
+      console.log event.data
       @receive event.data
 
     sendMethod: (args...) =>
       @worker.postMessage args...
 
-    send: (args...) =>
-      @rpc.send args...
-      
   class Boss extends RpcGeneral
     constructor: (@self) ->
       super()

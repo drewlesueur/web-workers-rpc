@@ -31,7 +31,7 @@
         } else if (obj.method) {
           method = obj.method, params = obj.params, id = obj.id;
           cb = __bind(function(err, result) {
-            return this.send({
+            return this.sendMethod({
               result: result,
               error: err,
               id: id

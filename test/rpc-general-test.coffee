@@ -66,10 +66,10 @@ describe "RpcGeneral", ->
 
     expect(rpc.methods.sayHi).toHaveBeenCalledWith("drew", cb)
 
-    spyOn rpc, "send"
+    spyOn rpc, "sendMethod"
     cb(null, "Hi drew")
 
-    expect(rpc.send).toHaveBeenCalledWith
+    expect(rpc.sendMethod).toHaveBeenCalledWith
       error: null
       result: "Hi drew"
       id: "123"
@@ -90,10 +90,10 @@ describe "RpcGeneral", ->
 
     expect(rpc.methods.sayHi).toHaveBeenCalledWith("drew", cb)
 
-    spyOn rpc, "send"
+    spyOn rpc, "sendMethod"
     cb("another error", null)
 
-    expect(rpc.send).toHaveBeenCalledWith
+    expect(rpc.sendMethod).toHaveBeenCalledWith
       error: "another error"
       result: null
       id: "123"

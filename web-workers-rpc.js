@@ -13,24 +13,20 @@
     Hire = (function() {
       __extends(Hire, RpcGeneral);
       function Hire(file) {
-        this.send = __bind(this.send, this);
         this.sendMethod = __bind(this.sendMethod, this);
         this.receiveMethod = __bind(this.receiveMethod, this);        Hire.__super__.constructor.call(this);
         this.worker = new Worker(file);
         this.worker.onmessage = this.receiveMethod;
       }
       Hire.prototype.receiveMethod = function(event) {
+        console.log("received");
+        console.log(event.data);
         return this.receive(event.data);
       };
       Hire.prototype.sendMethod = function() {
         var args, _ref;
         args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
         return (_ref = this.worker).postMessage.apply(_ref, args);
-      };
-      Hire.prototype.send = function() {
-        var args, _ref;
-        args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-        return (_ref = this.rpc).send.apply(_ref, args);
       };
       return Hire;
     })();

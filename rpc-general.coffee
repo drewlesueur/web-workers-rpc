@@ -22,7 +22,7 @@ dModule.define "rpc-general", ->
       else if obj.method
         {method, params, id} = obj 
         cb = (err, result) =>
-          @send
+          @sendMethod
             result: result
             error: err
             id: id
