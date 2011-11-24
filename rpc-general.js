@@ -7,15 +7,15 @@
         this.send = __bind(this.send, this);
         this.receive = __bind(this.receive, this);
         this.setMethods = __bind(this.setMethods, this);
-        this.setCallingMethod = __bind(this.setCallingMethod, this);
+        this.setSendMethod = __bind(this.setSendMethod, this);
         this.uuid = __bind(this.uuid, this);        this.callbacks = {};
         this.methods = {};
       }
       RpcGeneral.prototype.uuid = function() {
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});;
       };
-      RpcGeneral.prototype.setCallingMethod = function(method) {
-        return this.callingMethod = method;
+      RpcGeneral.prototype.setSendMethod = function(method) {
+        return this.sendMethod = method;
       };
       RpcGeneral.prototype.setMethods = function(methods) {
         return this.methods = methods;
@@ -46,7 +46,7 @@
       RpcGeneral.prototype.send = function(method, args, callback) {
         this.lastId = this.uuid();
         this.callbacks[this.lastId] = callback;
-        return this.callingMethod({
+        return this.sendMethod({
           method: method,
           params: args,
           id: this.lastId

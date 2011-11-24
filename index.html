@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+  </head>
+  <body>
+    <script src="dmodule.js"></script>
+    <script src="rpc-general.js"></script>
+    <script src="web-workers-rpc.js"></script>
+    <script>
+      window.onload = function () {
+        WebWorkersRpc = dmodule.require("web-workers-rpc")
+        Hire = WebWorkersRpc.Hire
+
+        hire = new Hire("sayhi.js")
+        hire.send "sayHi", ["drew"], (err, result) ->
+          alert(result)
+      }
+    </script>
+  </body>
+ </html>

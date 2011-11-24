@@ -2,9 +2,9 @@ describe "RpcGeneral", ->
   Rpc = dModule.require("rpc-general")
   rpc = new Rpc() 
  
-  it "should do an rpc request and receive response", ->
-    rpc.setCallingMethod -> 
-    spyOn rpc, "callingMethod"
+  it "should send an rpc request and receive response", ->
+    rpc.setSendMethod -> 
+    spyOn rpc, "sendMethod"
     theError = null
     theResult = null
     myCallback = (err, result) ->
@@ -15,7 +15,7 @@ describe "RpcGeneral", ->
     expect(rpc.lastId).toBeTruthy()
     id = rpc.lastId
     expect(rpc.callbacks[id]).toBe(myCallback)
-    expect(rpc.callingMethod).toHaveBeenCalledWith
+    expect(rpc.sendMethod).toHaveBeenCalledWith
       method: "someCoolMethod"
       params: ["arg1", "arg2"] 
       id: id
@@ -31,9 +31,9 @@ describe "RpcGeneral", ->
     expect(theError).toBe(null)
     expect(rpc.callbacks[id]).not.toBeTruthy()
 
-  it "should do an rpc request and receive response with an error", ->
-    rpc.setCallingMethod -> 
-    spyOn rpc, "callingMethod"
+  it "should send an rpc request and receive response with an error", ->
+    rpc.setSendMethod -> 
+    spyOn rpc, "sendMethod"
     theError = null
     theResult = null
     myCallback = (err, result) ->
@@ -98,6 +98,11 @@ describe "RpcGeneral", ->
       result: null
       id: "123"
 
-  
+  #TODO: should bind and trigger in rpc as well!
+  xit "should send a trigger event", ->
+  xit "should send a bind event", ->
+  xit "should receive a trigger event", ->
+  xit "should receive a bind event", ->
+   
 
 

@@ -3,10 +3,10 @@
     var Rpc, rpc;
     Rpc = dModule.require("rpc-general");
     rpc = new Rpc();
-    it("should do an rpc request and receive response", function() {
+    it("should send an rpc request and receive response", function() {
       var id, myCallback, theError, theResult;
-      rpc.setCallingMethod(function() {});
-      spyOn(rpc, "callingMethod");
+      rpc.setSendMethod(function() {});
+      spyOn(rpc, "sendMethod");
       theError = null;
       theResult = null;
       myCallback = function(err, result) {
@@ -17,7 +17,7 @@
       expect(rpc.lastId).toBeTruthy();
       id = rpc.lastId;
       expect(rpc.callbacks[id]).toBe(myCallback);
-      expect(rpc.callingMethod).toHaveBeenCalledWith({
+      expect(rpc.sendMethod).toHaveBeenCalledWith({
         method: "someCoolMethod",
         params: ["arg1", "arg2"],
         id: id
@@ -32,10 +32,10 @@
       expect(theError).toBe(null);
       return expect(rpc.callbacks[id]).not.toBeTruthy();
     });
-    it("should do an rpc request and receive response with an error", function() {
+    it("should send an rpc request and receive response with an error", function() {
       var id, myCallback, theError, theResult;
-      rpc.setCallingMethod(function() {});
-      spyOn(rpc, "callingMethod");
+      rpc.setSendMethod(function() {});
+      spyOn(rpc, "sendMethod");
       theError = null;
       theResult = null;
       myCallback = function(err, result) {
@@ -76,7 +76,7 @@
         id: "123"
       });
     });
-    return it("should recieve a request and send a response with an error", function() {
+    it("should recieve a request and send a response with an error", function() {
       var cb, methods;
       methods = {
         sayHi: function(name, cb) {
@@ -100,5 +100,9 @@
         id: "123"
       });
     });
+    xit("should send a trigger event", function() {});
+    xit("should send a bind event", function() {});
+    xit("should receive a trigger event", function() {});
+    return xit("should receive a bind event", function() {});
   });
 }).call(this);
