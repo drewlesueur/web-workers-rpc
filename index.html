@@ -10,7 +10,6 @@
       window.onload = function () {
         WebWorkersRpc = dModule.require("web-workers-rpc")
         Hire = WebWorkersRpc.Hire
-
         hire = new Hire("sayhi.js")
         hire.send("sayHi", ["drew"], function (err, result) {
           alert(result)
