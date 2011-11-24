@@ -19,8 +19,6 @@
         this.worker.onmessage = this.receiveMethod;
       }
       Hire.prototype.receiveMethod = function(event) {
-        console.log("received");
-        console.log(event.data);
         return this.receive(event.data);
       };
       Hire.prototype.sendMethod = function() {

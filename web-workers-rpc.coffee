@@ -8,8 +8,6 @@ dModule.define "web-workers-rpc", ->
       @worker.onmessage = @receiveMethod
 
     receiveMethod: (event) =>
-      console.log "received"
-      console.log event.data
       @receive event.data
 
     sendMethod: (args...) =>
